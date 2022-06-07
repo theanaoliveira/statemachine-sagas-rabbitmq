@@ -7,9 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Orchestrator", "Orchestrato
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Sagas.Domain", "Sample.Sagas.Domain\Sample.Sagas.Domain.csproj", "{67EC076F-2E0F-412E-A187-907B5C078231}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.Sagas.ReadFile.Service", "Samples.Sagas.ReadFile.Service\Samples.Sagas.ReadFile.Service.csproj", "{7F828AED-16CF-4AA8-9C5F-2DA471CEC097}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.Sagas.ReadFile.Service", "Samples.Sagas.ReadFile.Service\Samples.Sagas.ReadFile.Service.csproj", "{7F828AED-16CF-4AA8-9C5F-2DA471CEC097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Sagas.Infrastructure", "Sample.Sagas.Infrastructure\Sample.Sagas.Infrastructure.csproj", "{2BEE9823-9F47-4B39-BF5C-BC0A59A43B82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.Sagas.Infrastructure", "Sample.Sagas.Infrastructure\Sample.Sagas.Infrastructure.csproj", "{2BEE9823-9F47-4B39-BF5C-BC0A59A43B82}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1972E5B7-F00B-4588-8669-1053E3EF430C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{CF3BF56A-4393-4CB0-9928-97BC07DFCE34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,17 @@ Global
 		{2BEE9823-9F47-4B39-BF5C-BC0A59A43B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BEE9823-9F47-4B39-BF5C-BC0A59A43B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BEE9823-9F47-4B39-BF5C-BC0A59A43B82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1972E5B7-F00B-4588-8669-1053E3EF430C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1972E5B7-F00B-4588-8669-1053E3EF430C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1972E5B7-F00B-4588-8669-1053E3EF430C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1972E5B7-F00B-4588-8669-1053E3EF430C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D85AA4E3-F427-4F06-91C1-E9BC6F94E18A} = {CF3BF56A-4393-4CB0-9928-97BC07DFCE34}
+		{7F828AED-16CF-4AA8-9C5F-2DA471CEC097} = {CF3BF56A-4393-4CB0-9928-97BC07DFCE34}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F69100F6-8E00-40D7-8FD5-CD7B97F08161}

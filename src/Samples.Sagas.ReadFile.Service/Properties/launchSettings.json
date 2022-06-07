@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Samples.Sagas.ReadFile.Service": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}

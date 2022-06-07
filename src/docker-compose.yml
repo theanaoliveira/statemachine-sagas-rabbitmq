@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  sample-sagas-orchestrator:
+    image: ${DOCKER_REGISTRY-}sample-sagas-orchestrator
+    build:
+      context: .
+      dockerfile: Orchestrator/Dockerfile
+    networks:
+      - sample-sagas-network
+
+  sample-sagas-readfile-service:
+    image: ${DOCKER_REGISTRY-}sample-sagas-readfile-service
+    build:
+      context: .
+      dockerfile: Samples.Sagas.ReadFile.Service/Dockerfile
+    networks:
+      - sample-sagas-network
+
+networks:
+  sample-sagas-network:

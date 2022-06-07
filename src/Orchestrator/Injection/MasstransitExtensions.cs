@@ -10,7 +10,19 @@ namespace Orchestrator.Injection
         {
             services.AddMassTransit(x =>
             {
-                x.AddSagaStateMachine<MigrationStateMachine, MigrationState>();
+                x.AddSagaStateMachine<MigrationStateMachine, MigrationState>().InMemoryRepository();
+
+                x.UsingRabbitMq((context, configurator) =>
+                {
+                    x.SetKebabCaseEndpointNameFormatter();
+
+                    configurator.ReceiveEndpoint("migration-saga", e =>
+                    {
+                        e.UseMessageRetry(r => r.Immediate(50));
+                        e.UseInMemoryOutbox();
+                        e.StateMachineSaga<MigrationState>(context);
+                    });
+                });
             });
 
             return services;

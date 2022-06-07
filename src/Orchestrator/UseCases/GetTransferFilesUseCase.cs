@@ -21,7 +21,7 @@ namespace Orchestrator.UseCases
             {
                 var files = new DirectoryInfo(path).GetFiles("*.csv").ToList();
 
-                Log.Information($"JobFileTransferUseCase - Total files on server: {files.Count()} - FileNames: {string.Join(" - ", files.Select(s => s.Name).ToList())}");
+                Log.Information($"JobFileTransferUseCase - Total files on server: {files.Count} - FileNames: {string.Join(" - ", files.Select(s => s.Name).ToList())}");
 
                 files.ForEach(async f =>
                 {

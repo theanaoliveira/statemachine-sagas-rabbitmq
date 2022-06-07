@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  rabbitmq:
+    image: masstransit/rabbitmq:latest
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
+    healthcheck:
+      timeout: 5s
+      interval: 5s
+      retries: 10
+      test:
+        - "CMD"
+        - "rabbitmqctl"
+        - "status" 
+    networks:
+      - sample-sagas-network
+    
+  sample-sagas-orchestrator:
+    image: sample-sagas-orchestrator
+    build:
+      context: .
+      dockerfile: Orchestrator/Dockerfile
+    environment:
+      INPUT_LOCAL_PATH: "/app/local/IN"
+    volumes:
+      - ./dockerfiles/local/IN:/app/local/IN
+    networks:
+      - sample-sagas-network
+    depends_on:
+      - rabbitmq
+
+  sample-sagas-readfile-service:
+    image: sample-sagas-readfile-service
+    build:
+      context: .
+      dockerfile: Samples.Sagas.ReadFile.Service/Dockerfile
+    networks:
+      - sample-sagas-network
+    depends_on:
+      - sample-sagas-orchestrator
+      - rabbitmq
+
+networks:
+  sample-sagas-network:

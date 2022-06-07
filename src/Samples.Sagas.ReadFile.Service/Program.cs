@@ -1,2 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Microsoft.Extensions.Hosting;
+using Samples.Sagas.ReadFile.Service.Injection;
+
+using IHost host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices(s=> s.ConfigureQueue())
+    .Build();
+
+await host.RunAsync();
