@@ -17,5 +17,13 @@ services:
     networks:
       - sample-sagas-network
 
+  sample-sagas-processline-service:
+    image: ${DOCKER_REGISTRY-}sample-sagas-processline-service
+    build:
+      context: .
+      dockerfile: Samples.Sagas.ProcessLine.Service/Dockerfile    
+    networks:
+      - sample-sagas-network
+
 networks:
   sample-sagas-network:

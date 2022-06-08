@@ -1,5 +1,7 @@
 ﻿using MassTransit;
 using Orchestrator.Contracts;
+using Samples.Sagas.ProcessLine.Service.Masstransit.Contracts;
+using Samples.Sagas.ReadFile.Service.Masstransit.Contracts;
 
 namespace Orchestrator.Configuration
 {
@@ -7,9 +9,10 @@ namespace Orchestrator.Configuration
     {
         public MigrationStateMachine()
         {
-            InstanceState(x => x.CurrentState);
+            InstanceState(x => x.CurrentState, LineRequested);
 
             Event(() => ReadFileSubmitted, context => context.CorrelateById(i => i.Message.FileId));
+            Event(() => LineSubmitted, context => context.CorrelateById(i => i.Message.FileId));
 
             Initially(
                 When(ReadFileSubmitted).Then(context =>
@@ -21,11 +24,20 @@ namespace Orchestrator.Configuration
                     FileId = context.Message.FileId,
                     FilePath = context.Message.File
                 }))
-                .Finalize());
+                .TransitionTo(LineRequested));
+
+            During(LineRequested,
+                When(LineSubmitted)
+                .SendAsync(new Uri("queue:process-line"), context => context.Init<Line>(new
+                {
+                    FileId = context.Message.FileId,
+                    LineId = context.Message.LineId
+                })));
         }
 
-        public State ReadFileRequested { get; set; }
+        public State LineRequested { get; set; }
 
         public Event<ReadFileSubmitted> ReadFileSubmitted { get; set; }
+        public Event<ILineSubmitted> LineSubmitted { get; set; }
     }
 }

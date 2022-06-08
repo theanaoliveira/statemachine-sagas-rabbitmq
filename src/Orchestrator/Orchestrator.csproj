@@ -22,6 +22,8 @@
   
   <ItemGroup>
     <ProjectReference Include="..\Sample.Sagas.Domain\Sample.Sagas.Domain.csproj" />
+    <ProjectReference Include="..\Sample.Sagas.Infrastructure\Sample.Sagas.Infrastructure.csproj" />
+    <ProjectReference Include="..\Samples.Sagas.ProcessLine.Service\Samples.Sagas.ProcessLine.Service.csproj" />
     <ProjectReference Include="..\Samples.Sagas.ReadFile.Service\Samples.Sagas.ReadFile.Service.csproj" />
   </ItemGroup>
 

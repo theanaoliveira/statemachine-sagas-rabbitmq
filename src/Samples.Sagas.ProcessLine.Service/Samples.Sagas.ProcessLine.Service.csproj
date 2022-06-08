@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -20,8 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Sample.Sagas.Infrastructure\Sample.Sagas.Infrastructure.csproj" />
-    <ProjectReference Include="..\Samples.Sagas.Application\Sample.Sagas.Application.csproj" />
+    <ProjectReference Include="..\Sample.Sagas.Domain\Sample.Sagas.Domain.csproj" />
   </ItemGroup>
 
 </Project>

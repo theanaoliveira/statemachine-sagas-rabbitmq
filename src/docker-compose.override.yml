@@ -37,11 +37,24 @@ services:
     build:
       context: .
       dockerfile: Samples.Sagas.ReadFile.Service/Dockerfile
+    volumes:
+      - ./dockerfiles/local/IN:/app/local/IN
     networks:
       - sample-sagas-network
     depends_on:
-      - sample-sagas-orchestrator
       - rabbitmq
+      - sample-sagas-orchestrator
+
+  sample-sagas-processline-service:
+    image: sample-sagas-processline-service
+    build:
+      context: .
+      dockerfile: Samples.Sagas.ProcessLine.Service/Dockerfile
+    networks:
+      - sample-sagas-network
+    depends_on:
+      - rabbitmq
+      - sample-sagas-readfile-service
 
 networks:
   sample-sagas-network:

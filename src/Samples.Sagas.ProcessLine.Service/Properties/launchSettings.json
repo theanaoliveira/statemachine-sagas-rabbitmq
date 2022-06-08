@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Samples.Sagas.ProcessLine.Service": {
+      "commandName": "Project"
+    },
+    "Docker (1)": {
+      "commandName": "Docker"
+    }
+  }
+}

@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Orchestrator.Injection;
 using Orchestrator.UseCases;
+using Sample.Sagas.Infrastructure.Modules;
+using Samples.Sagas.ReadFile.Service.Modules;
 
 using IHost host = Host.CreateDefaultBuilder(args).Build();
 var services = new ServiceCollection();
@@ -26,6 +28,9 @@ await host.RunAsync();
 static IContainer RegisterContainers(IServiceCollection services)
 {
     var builder = new ContainerBuilder();
+
+    builder.RegisterModule<InfrastructureModule>();
+    builder.RegisterModule<ReadFileModule>();
 
     builder.RegisterType<GetTransferFilesUseCase>().As<IGetTransferFilesUseCase>().AsImplementedInterfaces().InstancePerLifetimeScope().AsSelf();
     builder.Populate(services);

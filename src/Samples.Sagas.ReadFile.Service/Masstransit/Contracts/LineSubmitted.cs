@@ -1,8 +1,8 @@
 ﻿namespace Samples.Sagas.ReadFile.Service.Masstransit.Contracts
 {
-    public class File
-    {
+    public interface ILineSubmitted
+    { 
         public Guid FileId { get; set; }
-        public string FilePath { get; set; }
+        public Guid LineId { get; set; }
     }
 }
