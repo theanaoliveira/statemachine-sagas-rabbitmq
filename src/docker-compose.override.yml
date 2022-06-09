@@ -1,6 +1,15 @@
 version: '3.7'
 
 services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - sample-sagas-network
+    
   rabbitmq:
     image: masstransit/rabbitmq:latest
     ports:
@@ -31,6 +40,7 @@ services:
       - sample-sagas-network
     depends_on:
       - rabbitmq
+      - postgres
 
   sample-sagas-readfile-service:
     image: sample-sagas-readfile-service
@@ -44,6 +54,7 @@ services:
     depends_on:
       - rabbitmq
       - sample-sagas-orchestrator
+      - postgres
 
   sample-sagas-processline-service:
     image: sample-sagas-processline-service
@@ -55,6 +66,7 @@ services:
     depends_on:
       - rabbitmq
       - sample-sagas-readfile-service
+      - postgres
 
 networks:
   sample-sagas-network:
