@@ -7,42 +7,44 @@ using Orchestrator.Injection;
 using Orchestrator.UseCases;
 using Sample.Sagas.Infrastructure.Modules;
 using Samples.Sagas.ReadFile.Service.Modules;
+using Serilog;
 
-using IHost host = Host.CreateDefaultBuilder(args).Build();
-var services = new ServiceCollection();
+static IHost AppStartup()
+{
+    Log.Logger = new LoggerConfiguration()
+        .Enrich.FromLogContext()
+        .MinimumLevel.Debug()
+        .WriteTo.Console()
+        .CreateLogger();
 
-services.ConfigureQueue();
+    var host = Host.CreateDefaultBuilder()
+        .ConfigureServices((context, services) =>
+        {
+            services.AddMassTransit(x => {
+                x.UsingRabbitMq((ctx, cfg) => {
+                    cfg.Host("rabbitmq", "/");
+                });
+            });
+        })
+        .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+        .ConfigureContainer<ContainerBuilder>(container =>
+        {
+            container.RegisterModule<InfrastructureModule>();
+            container.RegisterModule<ReadFileModule>();
 
-var container = RegisterContainers(services);
+            container.RegisterType<GetTransferFilesUseCase>().As<IGetTransferFilesUseCase>().AsImplementedInterfaces().InstancePerLifetimeScope().AsSelf();
 
-var bus = container.Resolve<IBusControl>();
+        }
+        )
+        .UseSerilog()
+        .Build();
+    return host;
+}
 
-bus.Start();
+using IHost host = AppStartup();
 
-Init(container);
+var useCase = host.Services.GetService<IGetTransferFilesUseCase>();
+
+await useCase.Execute();
 
 await host.RunAsync();
-
-#region Methods
-
-static IContainer RegisterContainers(IServiceCollection services)
-{
-    var builder = new ContainerBuilder();
-
-    builder.RegisterModule<InfrastructureModule>();
-    builder.RegisterModule<ReadFileModule>();
-
-    builder.RegisterType<GetTransferFilesUseCase>().As<IGetTransferFilesUseCase>().AsImplementedInterfaces().InstancePerLifetimeScope().AsSelf();
-    builder.Populate(services);
-
-    return builder.Build();
-}
-
-static void Init(IContainer container)
-{
-    var useCase = container.Resolve<IGetTransferFilesUseCase>();
-
-    useCase.Execute();
-}
-
-#endregion
