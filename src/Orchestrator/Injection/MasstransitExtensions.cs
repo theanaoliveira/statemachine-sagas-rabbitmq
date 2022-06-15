@@ -1,6 +1,10 @@
 ﻿using MassTransit;
+using MassTransit.EntityFrameworkCoreIntegration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Orchestrator.Configuration;
+using Orchestrator.Configuration.Persist;
+using System.Reflection;
 
 namespace Orchestrator.Injection
 {
@@ -8,9 +12,22 @@ namespace Orchestrator.Injection
     {
         public static IServiceCollection ConfigureQueue(this IServiceCollection services)
         {
+            string conn = Environment.GetEnvironmentVariable("DBCONN") ?? "";
+
+            services.AddDbContext<MigrationStateDbContext>(builder =>{
+                builder.UseNpgsql(conn, m => {
+                    m.MigrationsAssembly(Assembly.GetExecutingAssembly().GetName().Name);
+                    m.MigrationsHistoryTable($"__{nameof(MigrationStateDbContext)}");
+                });
+            });
+
             services.AddMassTransit(x =>
             {
-                x.AddSagaStateMachine<MigrationStateMachine, MigrationState>().InMemoryRepository();
+                x.AddSagaStateMachine<MigrationStateMachine, MigrationState>().EntityFrameworkRepository(r => {
+                    r.ConcurrencyMode = ConcurrencyMode.Pessimistic;
+                    r.LockStatementProvider = new PostgresLockStatementProvider();
+                    r.ExistingDbContext< MigrationStateDbContext>();
+                });
 
                 x.UsingRabbitMq((context, configurator) =>
                 {

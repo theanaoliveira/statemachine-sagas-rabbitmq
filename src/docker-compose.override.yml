@@ -34,6 +34,7 @@ services:
       dockerfile: Orchestrator/Dockerfile
     environment:
       INPUT_LOCAL_PATH: "/app/local/IN"
+      DBCONN: "Server=postgres;Port=5432;Database=postgres;User Id=postgres;Password=postgres;"
     volumes:
       - ./dockerfiles/local/IN:/app/local/IN
     networks:
