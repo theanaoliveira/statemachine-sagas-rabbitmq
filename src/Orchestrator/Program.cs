@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Orchestrator.Configuration.Persist;
 using Orchestrator.Injection;
 using Orchestrator.UseCases;
 using Serilog;
@@ -25,6 +27,10 @@ static IHost AppStartup()
 }
 
 using IHost host = AppStartup();
+
+await using var scope = host.Services.CreateAsyncScope();
+using var db = scope.ServiceProvider.GetService<MigrationStateDbContext>();
+await db.Database.MigrateAsync();
 
 var useCase = host.Services.GetService<IGetTransferFilesUseCase>();
 
