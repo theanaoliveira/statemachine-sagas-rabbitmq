@@ -1,7 +1,9 @@
 ﻿using Autofac;
 using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
+using Sample.Sagas.Application.Repositories.Database;
 using Sample.Sagas.Application.Repositories.Services;
+using Sample.Sagas.Infrastructure.Database.Repositories;
 using Sample.Sagas.Infrastructure.Mapper;
 using Sample.Sagas.Infrastructure.Services;
 
@@ -12,6 +14,8 @@ namespace Sample.Sagas.Infrastructure.Modules
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<FileConvert>().As<IFileConvert>().AsImplementedInterfaces().InstancePerLifetimeScope().AsSelf();
+            builder.RegisterType<FileRepository>().As<IFileRepository>().AsImplementedInterfaces().InstancePerLifetimeScope().AsSelf();
+            builder.RegisterType<FileTransferRepository>().As<IFileTransferRepository>().AsImplementedInterfaces().InstancePerLifetimeScope().AsSelf();
 
             Mapper(builder);
         }

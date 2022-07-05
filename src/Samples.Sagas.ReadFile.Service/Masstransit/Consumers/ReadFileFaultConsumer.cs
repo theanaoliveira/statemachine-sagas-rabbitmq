@@ -22,7 +22,7 @@ namespace Samples.Sagas.ReadFile.Service.Masstransit.Consumers
                 return Task.CompletedTask;
             }
 
-            return context.Publish<Contracts.File>(context.Message.Message);
+            return context.Publish(context.Message.Message);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using MassTransit;
 using Orchestrator.Contracts;
+using Sample.Sagas.Application.Repositories.Database;
+using Sample.Sagas.Domain;
 using Serilog;
 
 namespace Orchestrator.UseCases
@@ -7,10 +9,12 @@ namespace Orchestrator.UseCases
     public class GetTransferFilesUseCase : IGetTransferFilesUseCase
     {
         private readonly IPublishEndpoint publishEndpoint;
+        private readonly IFileRepository fileRepository;
 
-        public GetTransferFilesUseCase(IPublishEndpoint publishEndpoint)
+        public GetTransferFilesUseCase(IPublishEndpoint publishEndpoint, IFileRepository fileRepository)
         {
             this.publishEndpoint = publishEndpoint;
+            this.fileRepository = fileRepository;
         }
 
         public Task Execute()
@@ -25,7 +29,11 @@ namespace Orchestrator.UseCases
 
                 files.ForEach(async f =>
                 {
-                    var read = new ReadFileSubmitted(Guid.NewGuid(), f.FullName);
+                    var file = new Sample.Sagas.Domain.File(Guid.NewGuid(), f.Name, FileStatus.New);
+                    var read = new ReadFileSubmitted(file.Id, f.FullName);
+
+                    fileRepository.Add(file);
+
                     await publishEndpoint.Publish(read);
                 });
             }

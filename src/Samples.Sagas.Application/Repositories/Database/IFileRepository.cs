@@ -1,7 +1,10 @@
-﻿namespace Sample.Sagas.Application.Repositories.Database
+﻿using Sample.Sagas.Domain;
+
+namespace Sample.Sagas.Application.Repositories.Database
 {
     public interface IFileRepository
     {
-        void Add(File file);
+        void Add(Domain.File file);
+        void UpdateStatus(Guid fileId, FileStatus status);
     }
 }

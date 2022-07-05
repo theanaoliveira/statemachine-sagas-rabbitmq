@@ -30,8 +30,4 @@
     <ProjectReference Include="..\Samples.Sagas.Application\Sample.Sagas.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\Repositories\" />
-  </ItemGroup>
-
 </Project>
